@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "description": "This README would normally document whatever steps are necessary to get your application up and running.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test --workers 3 --grep=@Regressions --headed ",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report",
+    "test:debug": "playwright test --debug"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   
   "devDependencies": {
+    "@faker-js/faker": "^9.0.3",
     "@playwright/test": "^1.47.2",
     "@types/node": "^22.5.5"
   }
