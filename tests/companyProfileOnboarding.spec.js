@@ -6,7 +6,8 @@ test('@Regressions @Sanity Company profile onboarding', async ({ page }) => {
     const companyProfilePage = new CompanyProfilePage(page, expect);
 
     // Login
-    await companyProfilePage.login('ramavirtusaautobuyer@maildrop.cc', 'Password1');
+    //await companyProfilePage.login('ramavirtusaautobuyer@maildrop.cc', 'Password1');
+    await companyProfilePage.login('ramaautobuyersupplierpublish@maildrop.cc', 'Password1');
 
     // Fill the form sections
     await companyProfilePage.fillCompanyProfile();
@@ -14,8 +15,5 @@ test('@Regressions @Sanity Company profile onboarding', async ({ page }) => {
     await companyProfilePage.fillExternalIdentifiers();
     await companyProfilePage.fillManagement();
     await companyProfilePage.navigateToQuestionnaires();
-
-
-    
 
 });
