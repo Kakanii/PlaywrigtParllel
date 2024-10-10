@@ -17,7 +17,8 @@ const config = {
   fullyParallel: true,
   
   /* Report in HTML */
-  reporter: 'html',
+  //reporter: 'html',
+  reporter:[ ['html' , { outputFolder : 'playwright-report' , open: 'never' } ]],
 
   /* Configure projects for major browsers */
   projects:
@@ -34,6 +35,7 @@ const config = {
           ignoreHttpsErrors: true,
           permission: ['geolocation'],
           video: 'retain-on-failure',
+          viewport:{width:1365, height:600}
         },
       },
       {
@@ -47,6 +49,7 @@ const config = {
           ignoreHttpsErrors: true,
           permission: ['geolocation'],
           video: 'retain-on-failure',
+          viewport:{width:1365, height:600}
         },
       },
 
