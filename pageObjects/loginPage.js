@@ -1,7 +1,10 @@
-const { test, expect } = require('@playwright/test');
+import { expect } from '@playwright/test';
+import { Base } from '../utility/Base';
 const testdata = require('../data/testdata');
-class loginPage {
-    constructor(page) {
+
+class loginPage extends Base{
+    constructor(page) {    
+        super();   
         this.page = page;
         this.welcome_title = page.locator("(//h2[normalize-space()='Welcome back to Trust your Supplier'])[1]");
         this.emailaddress_label = page.locator("(//span[normalize-space()='Email Address'])[1]");
@@ -10,8 +13,12 @@ class loginPage {
         this.password_input = page.locator("//input[@id='password']");
         this.remember_me_checkbox = page.locator("(//p[@class='chakra-text css-h6z8rd'])[1]");
         this.forgot_password_button = page.locator("(//button[normalize-space()='Forgot Password'])[1]");
-        this.submit_button = page.locator("(//button[normalize-space()='Submit'])[1]");
+        this.submit_button = page.locator("(//button[normalize-space()='Sign In'])[1]");
         this.need_help_link = page.locator("(//p[@class='chakra-text css-f43mga'])[1]");
+    }
+
+    async gotoBuyerLoginPage() {
+        await this.page.goto(testdata.testURL.buyerURL);
     }
 
     async gotoLoginPage() {

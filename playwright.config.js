@@ -17,7 +17,8 @@ const config = {
   fullyParallel: true,
   
   /* Report in HTML */
-  reporter: 'html',
+  //reporter: 'html',
+  reporter:[ ['html' , { outputFolder : 'playwright-report' , open: 'never' } ]],
 
   use: {
     headless: false,
