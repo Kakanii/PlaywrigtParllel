@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 const { Base } = require("../utility/Base");
 const { inviteSupplierPage } = require("./inviteSupplierPage");
-
 let [newPage] = '';
 
 exports.maildropPage = class maildropPage extends Base {
@@ -31,7 +30,7 @@ exports.maildropPage = class maildropPage extends Base {
         this.checkBox = "//label[@type='checkbox']//span";
         this.textAreaId = "//textarea[@id='";
         this.textBtn = "(//button[text()='";
-        this.btnEnd = "'])[1]";
+        this.btnEnd = "'])[2]";
         this.TYSENG = "(//p[text()='English (US)'])[3]";
         this.endTooltip = "']/parent::label/parent::div/*";
         this.tootltip = "(//span[text()='Country/Region of Registration']/parent::label/parent::div/*)[3]";
@@ -42,13 +41,6 @@ exports.maildropPage = class maildropPage extends Base {
         this.refreshBtn = "//span[text()='Refresh']";
         this.selectState = "//label[@for='state']//parent::div//parent::div//parent::div//following-sibling::button";
         this.selectClass = "']//parent::div//following-sibling::p[text()='";
-        this.otpMail = "(//div[@class='truncate'])";
-        this.h2Text = "//h2[text()='";
-        this.mandateEnd = "']//span";
-        this.inputChkBox = "//input[@type='";
-        this.parentlabel = "']//parent::label";
-        this.selectAllChkBx = "((//p[text()='Select All']//parent::div//parent::div//parent::div)[5]//*)[8]";
-        this.btnEndTwo = "'])[2]";
     }
 
     async clickOnRegisterTYSFrommaildrop() {
@@ -95,22 +87,23 @@ exports.maildropPage = class maildropPage extends Base {
         const newPageURL = await newPage.url();
         console.log("new page URL is : " + newPageURL);
         console.log("Switched to new window");
+        //await newPage.waitForTimeout(30000);
         await newPage.waitForSelector(this.engLang);
         await expect(newPage.locator(this.engLang)).toBeVisible();
         console.log("Language Selector Present on new supplier login");
 
     }
     async verifyAllLanguages() {
-        const ExpLang = [
-            'English (US)',
-            'French Canadian',
-            'French',
-            'German',
-            'Brazilian Portuguese',
-            'Arabic',
-            'Italian',
-            'Spanish',
-            'Simplified Chinese'
+        const ExpLang = [ 
+                'English (US)',
+                'French Canadian',
+                'French',
+                'German',
+                'Brazilian Portuguese',
+                'Arabic',
+                'Italian',
+                'Spanish',
+                'Simplified Chinese'
         ]
         await newPage.waitForLoadState();
         const newPageURL = await newPage.url();
@@ -122,7 +115,8 @@ exports.maildropPage = class maildropPage extends Base {
         const elements = await newPage.locator(this.allLang).all();
         //console.log("All languages are: " + elements.allInnerText());
         for (const element of elements) {
-            const i = 0;
+            const i=0;
+            //await newPage.locator(this.langBtn).click();
             await element.click();
             const actualText = element.innerText();
             console.log("Actual language is: " + actualText);
@@ -135,170 +129,188 @@ exports.maildropPage = class maildropPage extends Base {
 
     }
     async verifyField(fieldName) {
-        await newPage.waitForSelector(this.spanTxt2 + fieldName + this.endTxt);
+       
+        //await newPage.waitForTimeout(30000);
         await expect(newPage.locator(this.spanTxt2 + fieldName + this.endTxt)).toHaveText(fieldName);
         console.log("Field - " + await newPage.locator(this.spanTxt2 + fieldName + this.endTxt).innerText() + " is visible on Company Details");
     }
     async verifyCountryFieldDisabled() {
-
+        //await newPage.waitForTimeout(30000);
         await expect(newPage.locator(this.countryinput)).toBeDisabled();
         console.log("Country field - " + await newPage.locator(this.countryLabel).innerText() + " is disabled on Company details");
     }
     async verifyFieldMandatory(fieldName) {
-
+        //await newPage.waitForTimeout(30000);
         await expect(newPage.locator(this.spanText + fieldName + this.mandate)).toBeVisible();
         console.log("Field - " + await newPage.locator(this.spanTxt2 + fieldName + this.endTxt).innerText() + " is mandatory on Company details");
     }
     async verifyFieldEditable(fieldName) {
+        //await newPage.waitForTimeout(30000);
         await expect(newPage.locator(this.inputId + fieldName + this.endTxt)).toBeEditable();
         console.log("Field - " + fieldName + " is editable on Company details");
     }
     async verifyPTextField(fieldName) {
-        const element = newPage.locator(this.pText + fieldName + this.endTxt).first();
-        await expect(element).toBeVisible();
+       
+        //await newPage.waitForTimeout(30000);
+        await expect(newPage.locator(this.pText + fieldName + this.endTxt)).toHaveText(fieldName);
         console.log("Field - " + fieldName + " is visible on Company Details");
     }
 
     async verifyPTextFieldOnTYS(fieldName) {
-
+       
+        //await newPage.waitForTimeout(30000);
         await expect(newPage.locator(this.TYSENG)).toHaveText(fieldName);
         console.log("Field - " + fieldName + " is visible on TYS Details");
     }
-    async verifyInputFieldWith(fieldName, inputVal) {
-
+    async verifyInputFieldWith(fieldName,inputVal) {
+       
+        //await newPage.waitForTimeout(10000);
         await newPage.waitForSelector(this.inputId + fieldName + this.endTxt);
         const element = newPage.locator(this.inputId + fieldName + this.endTxt);
         await element.clear();
         await element.type(inputVal);
         await expect(newPage.locator('text="Invalid format"')).toBeHidden();
         await element.inputValue(inputVal);
-        console.log("Entered input data - " + inputVal + " into " + fieldName);
+        console.log("Entered input data - " + inputVal+ " into " +fieldName);
 
     }
     async verifyFieldMandate(fieldName) {
-
+       
+        //await newPage.waitForTimeout(1000);
         const element = newPage.locator(this.inputId + fieldName + this.endTxt);
         await element.type('test');
         await element.clear();
-        const mandateText = newPage.locator('text="This field is required"').first();
-        await expect(mandateText).toBeVisible();
-        console.log(fieldName + " - is mandatory field ");
+        await expect(newPage.locator('text="This field is required"')).toBeVisible();
+        console.log(fieldName+" - is mandatory field "); 
     }
 
-    async verifyInvalidWebsiteURL(fieldName, urlValue) {
-
+    async verifyInvalidWebsiteURL(fieldName,urlValue) {
+       
+        //await newPage.waitForTimeout(1000);
         const element = newPage.locator(this.inputId + fieldName + this.endTxt);
         await element.clear();
         await element.type(urlValue);
-
+        
         await expect(newPage.locator('text="Invalid website URL"')).toBeVisible();
-        console.log(fieldName + " - is giving an error - Invalid website URL when " + urlValue + " is entered");
+        console.log(fieldName+" - is giving an error - Invalid website URL when "+urlValue+ " is entered" ); 
     }
 
-    async verifyValidWebsiteURL(fieldName, urlValue) {
-
+    async verifyValidWebsiteURL(fieldName,urlValue) {
+       
+        //await newPage.waitForTimeout(1000);
         const element = newPage.locator(this.inputId + fieldName + this.endTxt);
         await element.clear();
         await element.type(urlValue);
-
+        
         await expect(newPage.locator('text="Invalid website URL"')).toBeHidden();
-        console.log(fieldName + " - is not giving an error for valid URL " + urlValue);
+        console.log(fieldName+" - is not giving an error for valid URL "+urlValue); 
     }
 
     async verifyTYSTerms(fieldName) {
-
+       
+        //await newPage.waitForTimeout(1000);
         await newPage.locator(this.spanTxt2 + fieldName + this.endTxt).click();
         const terms = await newPage.locator(this.termsPopUp).innerText();
-        console.log("Terms and conditions are:-  " + terms);
+        console.log("Terms and conditions are:-  "+terms); 
     }
 
     async verifyButtonVisible(fieldName) {
-
+       
+        //await newPage.waitForTimeout(1000);
         await expect(newPage.locator(this.btnText + fieldName + this.endTxt)).toBeVisible();
 
-        console.log(fieldName + " - button is visible");
+        console.log(fieldName+" - button is visible"); 
     }
 
     async clickOnButton(fieldName) {
+       
+        //await newPage.waitForTimeout(1000);
+        await newPage.getByRole('button', { name: fieldName }).click();
 
-        await newPage.getByRole('button', { name: fieldName }).first().click();
-
-        console.log("Clicked on - " + fieldName);
+        console.log("Clicked on - " + fieldName); 
     }
 
-    async enterInputFieldWith(fieldName, inputVal) {
-
+    async enterInputFieldWith(fieldName,inputVal) {
+       
+        //await newPage.waitForTimeout(10000);
         const element = newPage.locator(this.inputId + fieldName + this.endTxt);
         await element.clear();
         await element.type(inputVal);
-        console.log("Entered input data - " + inputVal + " into " + fieldName);
+        console.log("Entered input data - " + inputVal+ " into " +fieldName);
 
     }
 
-    async enterTextAreaInputField(fieldName, inputVal) {
-
+    async enterTextAreaInputField(fieldName,inputVal) {
+       
+       // await newPage.waitForTimeout(10000);
         const element = newPage.locator(this.textAreaId + fieldName + this.endTxt);
         await element.clear();
         await element.type(inputVal);
-        console.log("Entered input data - " + inputVal + " into " + fieldName);
+        console.log("Entered input data - " + inputVal+ " into " +fieldName);
 
     }
 
     async clickOnCheckBox() {
-
+       
+        //await newPage.waitForTimeout(1000);
         await newPage.locator(this.checkBox).click();
 
-        console.log("Clicked on Check box ");
+        console.log("Clicked on Check box "); 
     }
 
     async clickOnSecondButtonOf(fieldName) {
-
+       
+        //await newPage.waitForTimeout(1000);
         await newPage.locator(this.textBtn + fieldName + this.btnEnd).click();
 
-        console.log("Clicked on - " + fieldName);
+        console.log("Clicked on - " + fieldName); 
     }
-    async verifyInputFieldWithSpecial(fieldName, inputVal) {
-
+    async verifyInputFieldWithSpecial(fieldName,inputVal) {
+       
+        //await newPage.waitForTimeout(10000);
         const element = newPage.locator(this.inputId + fieldName + this.endTxt);
         await element.clear();
         await element.type(inputVal);
         const enteredValue = await element.inputValue();
         await expect(enteredValue).not.toContain(inputVal);
-        console.log("This field did not allow - " + inputVal + " as " + fieldName);
+        console.log("This field did not allow - " + inputVal+ " as " +fieldName);
 
     }
 
-    async verifyInputFieldPrePopulated(fieldName, inputVal) {
-
+    async verifyInputFieldPrePopulated(fieldName,inputVal) {
+       
+        //await newPage.waitForTimeout(10000);
         const element = newPage.locator(this.inputId + fieldName + this.endTxt);
         const prePopulateValue = await element.inputValue();
-        await expect(prePopulateValue).toContain(inputVal.toLowerCase());
-        console.log("This field is pre populated with value - " + inputVal + " as " + fieldName);
+        await expect(prePopulateValue).toContain(inputVal);
+        console.log("This field is pre populated with value - " + inputVal+ " as " +fieldName);
 
     }
 
-    async verifyTooltipFor(fieldName, expectedTooltip) {
-
+    async verifyTooltipFor(fieldName,expectedTooltip) {
+       
+        //await newPage.waitForTimeout(30000);
         //const element = await newPage.locator(this.spanTxt2 + fieldName + this.endTooltip).nth(2);
-        //const element = await newPage.locator("(//*[name()='svg'][@class='chakra-icon css-15y48ks'])[1]").textContent()
-        //element.hover();
-        //const actualTooltip = element.getAttribute('aria-describedby').textContent();
-        let actualTooltip = await newPage.locator("(//*[name()='svg'][@class='chakra-icon css-15y48ks'])[1]").textContent();
-        console.log("Actual tootltip : " + actualTooltip);
+        const element = await newPage.locator(this.tootltip);
+        element.hover();
+        const actualTooltip = element.getAttribute('aria-describedby').textContent();
+        console.log("Actual tootltip : "+actualTooltip);
         expect(expectedTooltip).toContain(actualTooltip);
-        console.log(fieldName + " is showing tooltip as - " + actualTooltip);
+        console.log(fieldName + " is showing tooltip as - " +actualTooltip);
     }
 
     async verifyFlagFor(fieldName) {
-
-        const element = await newPage.waitForSelector(this.flag + fieldName + this.flagEnd);
-
+       
+        //await newPage.waitForTimeout(30000);
+        const element = await newPage.locator(this.flag + fieldName + this.flagEnd);
+        
         expect(element).toBeVisible();
         console.log(fieldName + " is showing under phone number");
     }
 
-    async verifyPhoneNumberWith(fieldName, inputVal, expecValue) {
-
+    async verifyPhoneNumberWith(fieldName,inputVal,expecValue) {
+       
+        //await newPage.waitForTimeout(30000);
         const element = await newPage.getByPlaceholder(fieldName);
         element.type(inputVal);
         const enteredValue = await element.inputValue();
@@ -306,38 +318,42 @@ exports.maildropPage = class maildropPage extends Base {
     }
 
     async verifyFieldWithlabel(fieldName) {
+       
+        //await newPage.waitForTimeout(30000);
         await expect(newPage.getByText(fieldName)).toBeVisible();
         console.log("Field - " + fieldName + " is visible on Your Details");
     }
 
-    async verifyPasswordFieldWith(fieldName, inputVal) {
-
+    async verifyPasswordFieldWith(fieldName,inputVal) {
+       
+       //await newPage.waitForTimeout(10000);
         const element = newPage.locator(this.inputId + fieldName + this.endTxt);
-        await element.clear();
         await element.clear();
         await element.type(inputVal);
         await expect(newPage.locator('text="Password must be at least 8 characters"')).toBeVisible();
         await element.inputValue(inputVal);
-        console.log("Showing message - Password must be at least 8 characters when enters" + inputVal + " into " + fieldName);
+        console.log("Showing message - Password must be at least 8 characters when enters" + inputVal+ " into " +fieldName);
 
     }
 
-    async verifyPasswordFieldWithInvalidMatch(fieldName, inputVal) {
-
+    async verifyPasswordFieldWithInvalidMatch(fieldName,inputVal) {
+       
+        //await newPage.waitForTimeout(10000);
         const element = newPage.locator(this.inputId + fieldName + this.endTxt);
         await element.clear();
         await element.type(inputVal);
         await expect(newPage.locator('text="Password must be between 8 and 15 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit"')).toBeVisible();
         await expect(newPage.locator(this.btnDisable)).toHaveCount(0);
-        console.log("Password field did not take - " + inputVal + " as valid password");
-        console.log("Showing message - Password must be between 8 and 15 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit - when enters" + inputVal + " into " + fieldName);
+        console.log("Password field did not take - "+ inputVal + " as valid password");
+        console.log("Showing message - Password must be between 8 and 15 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit - when enters" + inputVal+ " into " +fieldName);
 
     }
 
     async verifySignUpFieldEnable() {
-
+       
+        //await newPage.waitForTimeout(10000);
         await expect(newPage.locator(this.btnDisable)).toHaveCount(1);
-        console.log("Button is enabled ");
+        console.log("Sign Up Button is enabled ");
 
     }
 
@@ -357,7 +373,7 @@ exports.maildropPage = class maildropPage extends Base {
         const frameLocator = locator.contentFrame();
         let VCode = await frameLocator.locator('//h3').textContent();
         console.log(VCode);
-        let lOtp = VCode.substr(21, 27);
+        let lOtp = VCode.substr(21,27);
         console.log("OTP From Maildrop email - " + lOtp);
         let opt1 = lOtp.charAt(0);
         let opt2 = lOtp.charAt(1);
@@ -375,183 +391,39 @@ exports.maildropPage = class maildropPage extends Base {
         console.log("Entered OTP - " + lOtp);
     }
     async clickOnStateDropdown() {
-
+       
+        //await newPage.waitForTimeout(10000);
         await newPage.locator(this.selectState).click();
         console.log("Clicked on State dropdown ");
 
     }
     async clickOnText(value) {
 
-        const element = await newPage.locator(`text=${value}`);
+    const element = await newPage.locator(`text=${value}`);
+    await element.waitFor({ state: 'visible' });
+    await element.click();
+    console.log("Clicked on - " + value);
+
+    }
+
+    async ClickOnSelectFor(textValue,value) {
+
+        const element = await newPage.locator(this.pText+textValue+this.selectClass+value+this.endTxt);
         await element.waitFor({ state: 'visible' });
         await element.click();
         console.log("Clicked on - " + value);
+    
+        }
 
-    }
-
-    async ClickOnSelectFor(textValue, value) {
-
-        const element = await newPage.locator(this.pText + textValue + this.selectClass + value + this.endTxt);
-        await element.waitFor({ state: 'visible' });
-        await element.click();
-        console.log("Clicked on - " + value);
-
-    }
-
-    async verifyInputValuePrifill(fieldName, inputVal) {
-
-        await newPage.waitForSelector(this.inputId + fieldName + this.endTxt);
-        const element = newPage.locator(this.inputId + fieldName + this.endTxt);
-        await expect(element.getAttribute('value')).toContain(inputVal);
-        console.log(inputVal + " - Pre filled - " + " into " + fieldName);
-
-    }
-
-    async VerifyVerificationCodeBlocks() {
-        await newPage.waitForLoadState();
-        await expect(newPage.locator(this.optInput).nth(0)).toBeVisible();
-        await expect(newPage.locator(this.optInput).nth(1)).toBeVisible();
-        await expect(newPage.locator(this.optInput).nth(2)).toBeVisible();
-        await expect(newPage.locator(this.optInput).nth(3)).toBeVisible();
-        await expect(newPage.locator(this.optInput).nth(4)).toBeVisible();
-        await expect(newPage.locator(this.optInput).nth(5)).toBeVisible();
-        console.log("Verification code blocks are visible on the page");
-    }
-    async enterInvalidOTP() {
-        await newPage.waitForLoadState();
-        await newPage.locator(this.optInput).nth(0).type('1');
-        await newPage.locator(this.optInput).nth(1).type('2');
-        await newPage.locator(this.optInput).nth(2).type('2');
-        await newPage.locator(this.optInput).nth(3).type('4');
-        await newPage.locator(this.optInput).nth(4).type('5');
-        await newPage.locator(this.optInput).nth(5).type('6');
-        console.log("Entered Invalid OTP");
-    }
-    async clickOnSpanButton(fieldName) {
-        await newPage.locator(this.spanTxt2 + fieldName + this.endTxt).click();
-        console.log("Clicked on - " + fieldName + " Button");
-    }
-
-    async verifyResendOTP() {
-
-        console.log("Switched to maildrop...")
-        await this.page.waitForTimeout(10000);
-        //await this.page.bringToFront();
-        await this.page.waitForSelector(this.refreshBtn);
-        await this.page.locator(this.refreshBtn).click();
-        await this.page.waitForTimeout(10000);
-        await expect(this.page.locator(this.otpMail)).toHaveCount(3);
-        console.log("Email received resend OTP ");
-        await this.page.locator(this.inviteEmail).click();
-        //switch to new window
-        const locator = this.page.locator('//iframe');
-        const frameLocator = locator.contentFrame();
-        let VCode = await frameLocator.locator('//h3').textContent();
-        console.log(VCode);
-        let lOtp = VCode.substr(21, 27);
-        console.log("Resend OTP From Maildrop email - " + lOtp);
-        let opt1 = lOtp.charAt(0);
-        let opt2 = lOtp.charAt(1);
-        let opt3 = lOtp.charAt(2);
-        let opt4 = lOtp.charAt(3);
-        let opt5 = lOtp.charAt(4);
-        let opt6 = lOtp.charAt(5);
-        await newPage.waitForLoadState();
-        await newPage.locator(this.optInput).nth(0).type(opt1);
-        await newPage.locator(this.optInput).nth(1).type(opt2);
-        await newPage.locator(this.optInput).nth(2).type(opt3);
-        await newPage.locator(this.optInput).nth(3).type(opt4);
-        await newPage.locator(this.optInput).nth(4).type(opt5);
-        await newPage.locator(this.optInput).nth(5).type(opt6);
-        console.log("Entered Resend OTP - " + lOtp);
-    }
-    async verifyPageHeader(fieldName) {
-        await newPage.waitForSelector(this.h2Text + fieldName + this.endTxt);
-        await expect(newPage.locator(this.h2Text + fieldName + this.endTxt)).toBeVisible();
-        console.log(fieldName + " is visible");
-    }
-
-    async verifyInputFieldWithInvalidData(fieldName, inputVal) {
-
-        await newPage.waitForSelector(this.inputId + fieldName + this.endTxt);
-        const element = newPage.locator(this.inputId + fieldName + this.endTxt);
-        await element.clear();
-        await element.type(inputVal);
-        await expect(newPage.locator('text="Invalid format"')).toBeVisible();
-        await element.inputValue(inputVal);
-        console.log("Showing input data - " + inputVal + " as Invalid format");
-
-    }
-
-    async verifyPFieldMandatory(fieldName) {
-
-        await newPage.waitForSelector(this.pText + fieldName + this.mandateEnd);
-        const element = newPage.locator(this.pText + fieldName + this.mandateEnd);
-        await expect(element).toBeVisible();
-        console.log("Showing - " + fieldName + " is Mandatory");
-
-    }
-
-    async clickOnInputCheckbox(fieldName) {
-
-        await newPage.waitForSelector(this.inputChkBox + fieldName + this.parentlabel);
-        const element = newPage.locator(this.inputChkBox + fieldName + this.parentlabel);
-        await element.nth(0).click();
-        console.log("Clicked on - " + fieldName);
-
-    }
-
-    async clickOnSelectAllCheckbox() {
-
-        await newPage.locator(this.selectAllChkBx).click();
-        console.log("Clicked on Select All");
-
-    }
-
-    async verifySpanTextLabel(fieldName) {
-
-        await expect(newPage.locator(this.spanTxt2+fieldName+this.endTxt)).toBeVisible();
-        console.log(fieldName+ " - Field is visible on the page");
-
-    }
-
-    async verifyInvalidEmail(fieldName, inputVal) {
-
-        await newPage.waitForSelector(this.inputId + fieldName + this.endTxt);
-        const element = newPage.locator(this.inputId + fieldName + this.endTxt);
-        await element.clear();
-        await element.type(inputVal);
-        await expect(newPage.locator('text="Invalid email address"')).toBeVisible();
-        console.log("Showing error message - " + inputVal + " for invalid email " + fieldName);
-
-    }
-
-    async verifyEmailMissmatch(fieldName, inputVal) {
-
-        await newPage.waitForSelector(this.inputId + fieldName + this.endTxt);
-        const element = newPage.locator(this.inputId + fieldName + this.endTxt);
-        await element.clear();
-        await element.type(inputVal);
-        await expect(newPage.locator('text="Email addresses do not match."')).toBeVisible();
-        console.log("Showing error message - " + inputVal + " for mismatch email " + fieldName);
-
-    }
-
-    async ClickOnPtext(textValue, value) {
-
-        const element = await newPage.locator(this.pText + textValue + this.endTxt);
-        await element.waitFor({ state: 'visible' });
-        await element.click();
-        console.log("Clicked on - " + value);
-
-    }
-
-    async clickOnSecondButton(fieldName) {
-
-        await newPage.locator(this.textBtn + fieldName + this.btnEndTwo).click();
-
-        console.log("Clicked on - " + fieldName);
-    }
+        async verifyInputValuePrifill(fieldName,inputVal) {
+       
+            //await newPage.waitForTimeout(10000);
+            await newPage.waitForSelector(this.inputId + fieldName + this.endTxt);
+            const element = newPage.locator(this.inputId + fieldName + this.endTxt);
+            await expect(element.textContent()).toContain(inputVal);
+            console.log(inputVal+" - Pre filled - " + " into " +fieldName);
+    
+        }
 
 }
 

@@ -1,7 +1,6 @@
 import { Base } from "../utility/Base";
 import { expect } from '@playwright/test';
 
-
 export class buyerLoginPage extends Base {
 
     constructor(page) {

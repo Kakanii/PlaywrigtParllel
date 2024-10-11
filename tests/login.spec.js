@@ -1,29 +1,25 @@
-import { test, expect } from '@playwright/test';
-import testdata from '../data/testdata';
-const { loginPage } = require("../pageObjects/loginPage");
+const { test, expect } = require('@playwright/test');
+const { loginPage } = require('../pageObjects/loginPage');
+const testdata = require('../data/testdata');
 
-test.describe('Verify login page', () => {
+test('Verify Labels on Login Page', async ({ page }) => {
+    const loginPage = new loginPage(page);
+    await loginPage.gotoLoginPage();
+    console.log(await page.title());
+    await expect(page).toHaveTitle("Trust Your Supplier");
 
-    test('@Regression @Login Verify Labels on Login Page', async ({ page }) => {
-       
-        const login = new loginPage(page);
-        await login.gotoLoginPage();
-        console.log(await page.title());
-        await expect(page).toHaveTitle("Trust Your Supplier");
+    await loginPage.verifyWelcomeTitle();
+    await loginPage.verifyEmailAddressLabel();
+    await loginPage.verifyPasswordLabel();
+    await loginPage.verifyForgotPassword();
+    await loginPage.verifyNeedHelpLink();
 
-        await login.verifyWelcomeTitle();
-        await login.verifyEmailAddressLabel();
-        await login.verifyPasswordLabel();
-        await login.verifyForgotPassword();
-        await login.verifyNeedHelpLink();
+});
 
-    });
+test('@Smoke Verify Login with Valid Credentials', async ({ page }) => {
+    const loginPage = new loginPage(page);
+    await loginPage.gotoLoginPage();
 
-    test('@Smoke @Login Verify Login with Valid Credentials', async ({ page }) => {
-        const login = new loginPage(page);
-        await login.gotoLoginPage();
-        await login.validLogin();
+    loginPage.validLogin();
 
-       
-    });
-});    
+});

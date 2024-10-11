@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 const { Base } = require("../utility/Base");
 
-
 exports.inviteSupplierPage = class inviteSupplierPage extends Base {
 
     constructor(page) {
