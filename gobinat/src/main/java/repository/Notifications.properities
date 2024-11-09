@@ -1,0 +1,26 @@
+Normalize_label = //label[normalize-space()='
+filter_label= //div[@class='bx--accordion__title'][normalize-space()='
+connectedsupplierexport= //*[@id="root"]/span/div[4]//table/tbody/tr[1]/td[1]
+suppliernamelabel = //label[normalize-space()='Supplier Name']
+#div[class='bx--form-item bx--text-input-wrapper'] label[class='bx--label']
+savedfilters=//div[@class='bx--accordion__title'][normalize-space()='Saved Filters']
+markasreadbutton=//div[@class='cmt-2 bx--row']//button[1]
+markasunreadbutton =//div[@class='cmt-2 bx--row']//button[2]
+checkboxclick=//label[@aria-label='Select all rows']
+sname =//input[@title ='Type a Supplier Name']
+datepickernotification =//div[@class='bx--date-picker date-rage-field p-small bx--date-picker--range bx--date-picker--nolabel']//div[1]//div[1]//*[name()='svg']
+editiconnoti = //tbody/tr[1]/td[8]/div[1]/button[1]//*[name()='svg']
+uninstallbutton = //button[@class='bx--btn bx--btn--sm bx--btn--primary']
+yesbutton = //div[@role='tabpanel']//button[2]
+
+selctrole = //option[contains(text(),'
+reasonForUndoReturn =//textarea[@id='reasonForUndoReturn']
+
+	#buyer >> Block flag was added on the gZ4eq1UAU pvt ltd by sravyaibmsta@mailinator.com.
+            		One or more AR’s are generated as a result of qo8A45Rb9 pvt ltd’s response towards Company Operations questionnaire
+            	
+    
+    no notification for onhold,blobk on supplier end
+
+  
+    
