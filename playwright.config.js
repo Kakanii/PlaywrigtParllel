@@ -20,22 +20,28 @@ const config = {
   //reporter: 'html',
   reporter:[ ['html' , { outputFolder : 'playwright-report' , open: 'never' } ]],
 
+  use: {
+    headless: false,
+    video: 'retain-on-failure',
+    screenshot: 'only-on-failure', //on, off
+    trace: 'retain-on-failure', //off, on  
+    ignoreHttpsErrors: true,
+
+  },
+
   /* Configure projects for major browsers */
   projects:
     [
       {
         name: 'Chrome',
         use: {
-
           browserName: 'chromium',
-          headless: false,
-          screenshot: 'only-on-failure', //on, off
-          trace: 'retain-on-failure', //off, on    
-          // viewport: {width:720, height:720},
-          ignoreHttpsErrors: true,
           permission: ['geolocation'],
-          video: 'retain-on-failure',
-          viewport:{width:1365, height:600}
+          viewport: null, // Set viewport to null for maximizing the window
+          deviceScaleFactor: undefined,
+          launchOptions: {
+            args: ['--start-maximized'] // Pass argument to start maximized
+          }
         },
       },
       {
@@ -43,14 +49,10 @@ const config = {
         use: {
 
           browserName: 'webkit',
-          headless: false,
-          screenshot: 'only-on-failure', //on, off
-          trace: 'retain-on-failure', //off, on   
           ignoreHttpsErrors: true,
           permission: ['geolocation'],
-          video: 'retain-on-failure',
-          viewport:{width:1365, height:600}
-        },
+          viewport: { width: 1366, height: 768 }, // Set viewport to null for maximizing the window
+          },
       },
 
 
